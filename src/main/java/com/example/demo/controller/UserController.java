@@ -17,7 +17,6 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    //API trả về List User.
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> listAllUsers() {
         List<User> accounts = userService.findAll();
@@ -27,7 +26,6 @@ public class UserController {
         return new ResponseEntity<List<User>>(accounts, HttpStatus.OK);
     }
 
-    //API trả về User có ID trên url.
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         System.out.println("Fetching User with id " + id);
@@ -39,17 +37,6 @@ public class UserController {
         return new ResponseEntity<User>(account, HttpStatus.OK);
     }
 
-    //API tạo một Admin mới.
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating User " + user.getName());
-        userService.updateUser(user);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-    }
-
-    //API cập nhật một Admin với ID trên url.
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<User> updateAdmin(@PathVariable("id") Long id, @RequestBody User user) {
         System.out.println("Updating User " + id);
@@ -67,7 +54,14 @@ public class UserController {
         return new ResponseEntity<User>(curremUser, HttpStatus.OK);
     }
 
-    //API xóa một Admin với ID trên url.
+    @RequestMapping(value = "/users/{id}/setTimezone", method = RequestMethod.PATCH)
+    public ResponseEntity<User> setTimezone(@PathVariable("id") Long id, @RequestBody String timezone) {
+        User user = userService.findById(id);
+        user.setTimezone(timezone);
+        userService.updateUser(user);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
         System.out.println("Fetching & Deleting User with id " + id);
