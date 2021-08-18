@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<List<User>> listAllUsers() {
         List<User> accounts = userService.findAll();
         if (accounts.isEmpty()) {
@@ -26,9 +26,8 @@ public class UserController {
         return new ResponseEntity<List<User>>(accounts, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        System.out.println("Fetching User with id " + id);
         User account = userService.findById(id);
         if (account == null) {
             System.out.println("User with id " + id + " not found");
@@ -37,10 +36,18 @@ public class UserController {
         return new ResponseEntity<User>(account, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<User> updateAdmin(@PathVariable("id") Long id, @RequestBody User user) {
-        System.out.println("Updating User " + id);
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
+        User account = userService.findByUsername(username);
+        if (account == null) {
+            System.out.println("User with username " + username + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<User>(account, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<User> updateAdmin(@PathVariable("id") Long id, @RequestBody User user) {
         User curremUser = userService.findById(id);
 
         if (curremUser == null) {
@@ -54,7 +61,7 @@ public class UserController {
         return new ResponseEntity<User>(curremUser, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/users/{id}/setTimezone", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/user/{id}/setTimezone", method = RequestMethod.PATCH)
     public ResponseEntity<User> setTimezone(@PathVariable("id") Long id, @RequestBody String timezone) {
         User user = userService.findById(id);
         user.setTimezone(timezone);
@@ -62,10 +69,8 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
-        System.out.println("Fetching & Deleting User with id " + id);
-
         User user = userService.findById(id);
         if (user == null) {
             System.out.println("Unable to delete. User with id " + id + " not found");
