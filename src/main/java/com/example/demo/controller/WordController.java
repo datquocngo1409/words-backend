@@ -18,7 +18,7 @@ public class WordController {
     @Autowired
     private WordService wordService;
 
-    @RequestMapping(value = "/words", method = RequestMethod.GET)
+    @RequestMapping(value = "/word", method = RequestMethod.GET)
     public ResponseEntity<List<Word>> listAll() {
         List<Word> accounts = wordService.findAll();
         if (accounts.isEmpty()) {
@@ -27,7 +27,7 @@ public class WordController {
         return new ResponseEntity<List<Word>>(accounts, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/words/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/word/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Word> getById(@PathVariable("id") Long id) {
         Word object = wordService.findById(id);
         if (object == null) {
@@ -37,15 +37,15 @@ public class WordController {
         return new ResponseEntity<Word>(object, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/words", method = RequestMethod.POST)
+    @RequestMapping(value = "/word", method = RequestMethod.POST)
     public ResponseEntity<Void> create(@RequestBody Word word, UriComponentsBuilder ucBuilder) {
         wordService.update(word);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/words/{id}").buildAndExpand(word.getId()).toUri());
+        headers.setLocation(ucBuilder.path("/word/{id}").buildAndExpand(word.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/addListWords", method = RequestMethod.POST)
+    @RequestMapping(value = "/word/addList", method = RequestMethod.POST)
     public ResponseEntity<Void> createList(@RequestBody List<Word> words, UriComponentsBuilder ucBuilder) {
         for (Word word : words) {
             wordService.update(word);
@@ -53,7 +53,7 @@ public class WordController {
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/words/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/word/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Word> updateAdmin(@PathVariable("id") Long id, @RequestBody Word word) {
         Word current = wordService.findById(id);
 
@@ -68,7 +68,7 @@ public class WordController {
         return new ResponseEntity<Word>(current, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/words/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/word/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Word> delete(@PathVariable("id") Long id) {
         Word word = wordService.findById(id);
         if (word == null) {

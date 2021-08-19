@@ -11,12 +11,20 @@ public class Word {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String word;
+    private String meaning;
+    private String type;
+    private String pronounce;
+    private String description;
 
     public Word() {
     }
 
-    public Word(String word) {
+    public Word(String word, String meaning, String type, String pronounce, String description) {
         this.word = word;
+        this.meaning = meaning;
+        this.type = type;
+        this.pronounce = pronounce;
+        this.description = description;
     }
 
     public Long getId() {
@@ -33,5 +41,37 @@ public class Word {
 
     public void setWord(String word) {
         this.word = word;
+    }
+
+    public String getMeaning() {
+        return meaning;
+    }
+
+    public void setMeaning(String meaning) {
+        this.meaning = meaning;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPronounce() {
+        return pronounce;
+    }
+
+    public void setPronounce(String pronounce) {
+        this.pronounce = pronounce;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
