@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,9 @@ public class TopicController {
     public ResponseEntity<Void> create(@RequestBody Topic topic, UriComponentsBuilder ucBuilder) {
         topicService.update(topic);
         Level level = topic.getLevel();
+        if (level.getTopicList() == null) {
+            level.setTopicList(new ArrayList());
+        }
         if (!level.getTopicList().contains(topic)) {
             List<Topic> topicList = level.getTopicList();
             topicList.add(topic);
@@ -73,6 +77,9 @@ public class TopicController {
 
         topicService.update(current);
         Level level = topic.getLevel();
+        if (level.getTopicList() == null) {
+            level.setTopicList(new ArrayList());
+        }
         if (!level.getTopicList().contains(topic)) {
             List<Topic> topicList = level.getTopicList();
             topicList.add(topic);
