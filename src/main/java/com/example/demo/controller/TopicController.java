@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Level;
 import com.example.demo.model.Topic;
 import com.example.demo.model.Word;
+import com.example.demo.service.LevelService;
 import com.example.demo.service.TopicService;
 import com.example.demo.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import java.util.List;
 public class TopicController {
     @Autowired
     private TopicService topicService;
+    @Autowired
+    private LevelService levelService;
     @Autowired
     private WordService wordService;
 
@@ -44,6 +48,13 @@ public class TopicController {
     @RequestMapping(value = "/topic", method = RequestMethod.POST)
     public ResponseEntity<Void> create(@RequestBody Topic topic, UriComponentsBuilder ucBuilder) {
         topicService.update(topic);
+        Level level = topic.getLevel();
+        if (!level.getTopicList().contains(topic)) {
+            List<Topic> topicList = level.getTopicList();
+            topicList.add(topic);
+            level.setTopicList(topicList);
+            levelService.update(level);
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/topic/{id}").buildAndExpand(topic.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
@@ -61,6 +72,13 @@ public class TopicController {
         current = topic;
 
         topicService.update(current);
+        Level level = topic.getLevel();
+        if (!level.getTopicList().contains(topic)) {
+            List<Topic> topicList = level.getTopicList();
+            topicList.add(topic);
+            level.setTopicList(topicList);
+            levelService.update(level);
+        }
         return new ResponseEntity<Topic>(current, HttpStatus.OK);
     }
 
