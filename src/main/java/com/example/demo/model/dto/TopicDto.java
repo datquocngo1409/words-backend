@@ -23,7 +23,9 @@ public class TopicDto {
         this.name = topic.getName();
         this.description = topic.getDescription();
         this.wordList = topic.getWordList();
-        this.levelId = topic.getLevel().getId();
-        this.levelName = topic.getLevel().getName();
+        if (topic.getLevel() != null) {
+            this.levelId = topic.getLevel().getId();
+            this.levelName = topic.getLevel().getName();
+        }
     }
 }
