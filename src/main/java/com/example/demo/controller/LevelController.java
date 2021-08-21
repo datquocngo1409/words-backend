@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Level;
 import com.example.demo.model.Word;
+import com.example.demo.model.dto.LevelDto;
 import com.example.demo.service.LevelService;
 import com.example.demo.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,22 +25,28 @@ public class LevelController {
     private WordService wordService;
 
     @RequestMapping(value = "/level", method = RequestMethod.GET)
-    public ResponseEntity<List<Level>> listAll() {
+    public ResponseEntity<List<LevelDto>> listAll() {
         List<Level> accounts = levelService.findAll();
         if (accounts.isEmpty()) {
-            return new ResponseEntity<List<Level>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<List<LevelDto>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<Level>>(accounts, HttpStatus.OK);
+        List<LevelDto> dtos = new ArrayList<>();
+        for (Level level : accounts) {
+            LevelDto dto = new LevelDto(level);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<List<LevelDto>>(dtos, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/level/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Level> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<LevelDto> getById(@PathVariable("id") Long id) {
         Level object = levelService.findById(id);
         if (object == null) {
             System.out.println("Level with id " + id + " not found");
-            return new ResponseEntity<Level>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<LevelDto>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Level>(object, HttpStatus.OK);
+        LevelDto dto = new LevelDto(object);
+        return new ResponseEntity<LevelDto>(dto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/level", method = RequestMethod.POST)
@@ -58,27 +66,28 @@ public class LevelController {
     }
 
     @RequestMapping(value = "/level/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Level> updateAdmin(@PathVariable("id") Long id, @RequestBody Level level) {
+    public ResponseEntity<LevelDto> updateAdmin(@PathVariable("id") Long id, @RequestBody Level level) {
         Level current = levelService.findById(id);
 
         if (current == null) {
             System.out.println("Level with id " + id + " not found");
-            return new ResponseEntity<Level>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<LevelDto>(HttpStatus.NOT_FOUND);
         }
 
         current = level;
 
         levelService.update(current);
-        return new ResponseEntity<Level>(current, HttpStatus.OK);
+        LevelDto dto = new LevelDto(current);
+        return new ResponseEntity<LevelDto>(dto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/level/{id}/addWord", method = RequestMethod.POST)
-    public ResponseEntity<Level> addWordToLevel(@PathVariable("id") Long id, @RequestBody List<Word> wordList) {
+    public ResponseEntity<LevelDto> addWordToLevel(@PathVariable("id") Long id, @RequestBody List<Word> wordList) {
         Level level = levelService.findById(id);
 
         if (level == null) {
             System.out.println("Level with id " + id + " not found");
-            return new ResponseEntity<Level>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<LevelDto>(HttpStatus.NOT_FOUND);
         }
 
         List<Word> levelWordList = level.getWordList();
@@ -90,7 +99,8 @@ public class LevelController {
         }
 
         levelService.update(level);
-        return new ResponseEntity<Level>(level, HttpStatus.OK);
+        LevelDto dto = new LevelDto(level);
+        return new ResponseEntity<LevelDto>(dto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/level/{id}", method = RequestMethod.DELETE)

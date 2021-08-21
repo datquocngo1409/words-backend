@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Level;
 import com.example.demo.model.Topic;
+import com.example.demo.model.dto.TopicDto;
 import com.example.demo.model.Word;
 import com.example.demo.service.LevelService;
 import com.example.demo.service.TopicService;
@@ -28,22 +29,28 @@ public class TopicController {
     private WordService wordService;
 
     @RequestMapping(value = "/topic", method = RequestMethod.GET)
-    public ResponseEntity<List<Topic>> listAll() {
+    public ResponseEntity<List<TopicDto>> listAll() {
         List<Topic> accounts = topicService.findAll();
         if (accounts.isEmpty()) {
-            return new ResponseEntity<List<Topic>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<List<TopicDto>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<Topic>>(accounts, HttpStatus.OK);
+        List<TopicDto> dtos = new ArrayList<>();
+        for (Topic topic : accounts) {
+            TopicDto dto = new TopicDto(topic);
+            dtos.add(dto);
+        }
+        return new ResponseEntity<List<TopicDto>>(dtos, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/topic/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Topic> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<TopicDto> getById(@PathVariable("id") Long id) {
         Topic object = topicService.findById(id);
         if (object == null) {
             System.out.println("Topic with id " + id + " not found");
-            return new ResponseEntity<Topic>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<TopicDto>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Topic>(object, HttpStatus.OK);
+        TopicDto dto = new TopicDto(object);
+        return new ResponseEntity<TopicDto>(dto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/topic", method = RequestMethod.POST)
@@ -90,12 +97,12 @@ public class TopicController {
     }
 
     @RequestMapping(value = "/topic/{id}/addWord", method = RequestMethod.POST)
-    public ResponseEntity<Topic> addWordToTopic(@PathVariable("id") Long id, @RequestBody List<Word> wordList) {
+    public ResponseEntity<TopicDto> addWordToTopic(@PathVariable("id") Long id, @RequestBody List<Word> wordList) {
         Topic topic = topicService.findById(id);
 
         if (topic == null) {
             System.out.println("Topic with id " + id + " not found");
-            return new ResponseEntity<Topic>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<TopicDto>(HttpStatus.NOT_FOUND);
         }
 
         List<Word> topicWordList = topic.getWordList();
@@ -107,7 +114,8 @@ public class TopicController {
         }
 
         topicService.update(topic);
-        return new ResponseEntity<Topic>(topic, HttpStatus.OK);
+        TopicDto dto = new TopicDto(topic);
+        return new ResponseEntity<TopicDto>(dto, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/topic/{id}", method = RequestMethod.DELETE)
