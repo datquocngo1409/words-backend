@@ -100,9 +100,13 @@ public class TopicController {
         }
         List<Topic> newTopicList = level.getTopicList();
         if (!newTopicList.contains(topic)) {
-            newTopicList.add(topic);
-            level.setTopicList(newTopicList);
-            levelService.update(level);
+            try {
+                newTopicList.add(topic);
+                level.setTopicList(newTopicList);
+                levelService.update(level);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         return new ResponseEntity<Topic>(current, HttpStatus.OK);
     }
