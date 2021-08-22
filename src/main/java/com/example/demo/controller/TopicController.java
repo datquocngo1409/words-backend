@@ -80,22 +80,22 @@ public class TopicController {
             return new ResponseEntity<Topic>(HttpStatus.NOT_FOUND);
         }
 
-        System.out.println(1);
         Level oldLevel = current.getLevel();
+        System.out.println(oldLevel.getName());
         if (oldLevel != null && oldLevel.getTopicList().size() > 0) {
+            System.out.println(1);
             List<Topic> oldLevelTopic = oldLevel.getTopicList();
             if (oldLevelTopic.contains(topic)) {
+                System.out.println(2);
                 oldLevelTopic.remove(topic);
                 oldLevel.setTopicList(oldLevelTopic);
                 levelService.update(oldLevel);
             }
         }
 
-        System.out.println(2);
         current = topic;
 
         topicService.update(current);
-        System.out.println(3);
         Level level = topic.getLevel();
         if (level.getTopicList() == null) {
             level.setTopicList(new ArrayList());
