@@ -81,14 +81,12 @@ public class TopicController {
         }
 
         Level oldLevel = current.getLevel();
-        System.out.println(oldLevel.getName());
         if (oldLevel != null && oldLevel.getTopicList().size() > 0) {
-            System.out.println(1);
             List<Topic> oldLevelTopic = oldLevel.getTopicList();
             if (oldLevelTopic.contains(current)) {
-                System.out.println(2);
-                oldLevelTopic.remove(topic);
+                oldLevelTopic.remove(current);
                 oldLevel.setTopicList(oldLevelTopic);
+                System.out.println(oldLevelTopic.size());
                 levelService.update(oldLevel);
             }
         }
