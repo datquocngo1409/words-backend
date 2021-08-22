@@ -98,15 +98,15 @@ public class TopicController {
         if (level.getTopicList() == null) {
             level.setTopicList(new ArrayList());
         }
-        List<Topic> newTopicList = level.getTopicList();
-        if (!newTopicList.contains(topic)) {
-            try {
+        try {
+            List<Topic> newTopicList = level.getTopicList();
+            if (!newTopicList.contains(topic)) {
                 newTopicList.add(topic);
                 level.setTopicList(newTopicList);
                 levelService.update(level);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return new ResponseEntity<Topic>(current, HttpStatus.OK);
     }
@@ -122,7 +122,7 @@ public class TopicController {
 
         List<Word> topicWordList = topic.getWordList();
 
-        for (Word word: wordList) {
+        for (Word word : wordList) {
             wordService.update(word);
             topicWordList.add(word);
             topic.setWordList(topicWordList);
