@@ -80,6 +80,7 @@ public class TopicController {
             return new ResponseEntity<Topic>(HttpStatus.NOT_FOUND);
         }
 
+        System.out.println(1);
         Level oldLevel = current.getLevel();
         if (oldLevel != null && oldLevel.getTopicList().size() > 0) {
             List<Topic> oldLevelTopic = oldLevel.getTopicList();
@@ -90,13 +91,16 @@ public class TopicController {
             }
         }
 
+        System.out.println(2);
         current = topic;
 
         topicService.update(current);
+        System.out.println(3);
         Level level = topic.getLevel();
         if (level.getTopicList() == null) {
             level.setTopicList(new ArrayList());
         }
+        System.out.println(4);
         if (!level.getTopicList().contains(topic)) {
             List<Topic> topicList = level.getTopicList();
             topicList.add(topic);
