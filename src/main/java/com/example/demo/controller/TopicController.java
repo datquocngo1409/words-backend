@@ -98,6 +98,12 @@ public class TopicController {
         if (level.getTopicList() == null) {
             level.setTopicList(new ArrayList());
         }
+        List<Topic> newTopicList = level.getTopicList();
+        if (!newTopicList.contains(topic)) {
+            newTopicList.add(topic);
+            level.setTopicList(newTopicList);
+            levelService.update(level);
+        }
         return new ResponseEntity<Topic>(current, HttpStatus.OK);
     }
 
