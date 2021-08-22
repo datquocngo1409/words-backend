@@ -85,7 +85,7 @@ public class TopicController {
         if (oldLevel != null && oldLevel.getTopicList().size() > 0) {
             System.out.println(1);
             List<Topic> oldLevelTopic = oldLevel.getTopicList();
-            if (oldLevelTopic.contains(topic)) {
+            if (oldLevelTopic.contains(current)) {
                 System.out.println(2);
                 oldLevelTopic.remove(topic);
                 oldLevel.setTopicList(oldLevelTopic);
@@ -100,7 +100,6 @@ public class TopicController {
         if (level.getTopicList() == null) {
             level.setTopicList(new ArrayList());
         }
-        System.out.println(4);
         return new ResponseEntity<Topic>(current, HttpStatus.OK);
     }
 
