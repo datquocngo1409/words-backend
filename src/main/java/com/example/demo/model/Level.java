@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ public class Level {
 
     private String name;
 
+    @JsonBackReference
     @OneToMany
     private List<Topic> topicList;
 
