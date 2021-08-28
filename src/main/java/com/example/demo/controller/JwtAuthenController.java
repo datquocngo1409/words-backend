@@ -60,6 +60,7 @@ public class JwtAuthenController {
         if (isExit == false) {
             User userSave = new User(user.getUsername(), user.getPassword());
             userSave.setRole(user.getRole());
+            userSave.setName(user.getName());
             userService.createUser(userSave);
             userLearnService.create(new UserLearn(userSave));
             return ResponseEntity.ok(userDetailsService.save(user));

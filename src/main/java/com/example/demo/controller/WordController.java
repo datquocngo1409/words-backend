@@ -54,7 +54,7 @@ public class WordController {
     }
 
     @RequestMapping(value = "/word/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Word> updateAdmin(@PathVariable("id") Long id, @RequestBody Word word) {
+    public ResponseEntity<Word> update(@PathVariable("id") Long id, @RequestBody Word word) {
         Word current = wordService.findById(id);
 
         if (current == null) {
@@ -63,6 +63,21 @@ public class WordController {
         }
 
         current = word;
+
+        wordService.update(current);
+        return new ResponseEntity<Word>(current, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/word/{id}/image", method = RequestMethod.PATCH)
+    public ResponseEntity<Word> updateImage(@PathVariable("id") Long id, @RequestBody String imageUrl) {
+        Word current = wordService.findById(id);
+
+        if (current == null) {
+            System.out.println("Word with id " + id + " not found");
+            return new ResponseEntity<Word>(HttpStatus.NOT_FOUND);
+        }
+
+        current.setImageUrl(imageUrl);
 
         wordService.update(current);
         return new ResponseEntity<Word>(current, HttpStatus.OK);

@@ -3,6 +3,7 @@ package com.example.demo.model;
 public class RequestUser {
     private String username;
     private String password;
+    private String name;
     private String role;
 
     public String getUsername() {
@@ -27,5 +28,13 @@ public class RequestUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

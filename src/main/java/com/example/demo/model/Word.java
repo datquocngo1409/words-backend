@@ -15,16 +15,18 @@ public class Word {
     private String type;
     private String pronounce;
     private String description;
+    private String imageUrl;
 
     public Word() {
     }
 
-    public Word(String word, String meaning, String type, String pronounce, String description) {
+    public Word(String word, String meaning, String type, String pronounce, String description, String imageUrl) {
         this.word = word;
         this.meaning = meaning;
         this.type = type;
         this.pronounce = pronounce;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
@@ -73,5 +75,13 @@ public class Word {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
