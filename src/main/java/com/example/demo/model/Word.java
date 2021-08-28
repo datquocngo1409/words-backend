@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Word {
@@ -15,6 +12,8 @@ public class Word {
     private String type;
     private String pronounce;
     private String description;
+
+    @Lob
     private String imageUrl;
 
     public Word() {
