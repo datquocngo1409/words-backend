@@ -13,12 +13,12 @@ public class LevelDto {
     private Long id;
     private String name;
     private List<TopicDto> topicDtoList;
-    private List<Word> wordList;
+    private List<WordDto> wordList;
 
     public LevelDto(Level level) {
         this.id = level.getId();
         this.name = level.getName();
-        this.wordList = level.getWordList();
+        this.wordList = level.getWordDtoList();
         List<TopicDto> dtos = new ArrayList<>();
         for (Topic topic : level.getTopicList()) {
             TopicDto dto = new TopicDto(topic);

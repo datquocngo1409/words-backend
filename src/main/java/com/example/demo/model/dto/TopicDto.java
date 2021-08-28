@@ -11,7 +11,7 @@ public class TopicDto {
     private Long id;
     private String name;
     private String description;
-    private List<Word> wordList;
+    private List<WordDto> wordList;
     private Long levelId;
     private String levelName;
 
@@ -22,7 +22,7 @@ public class TopicDto {
         this.id = topic.getId();
         this.name = topic.getName();
         this.description = topic.getDescription();
-        this.wordList = topic.getWordList();
+        this.wordList = topic.getWordDtoList();
         if (topic.getLevel() != null) {
             this.levelId = topic.getLevel().getId();
             this.levelName = topic.getLevel().getName();
