@@ -12,7 +12,7 @@ public class Word {
     private String pronounce;
     private String description;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String imageUrl;
 
     public Word() {
