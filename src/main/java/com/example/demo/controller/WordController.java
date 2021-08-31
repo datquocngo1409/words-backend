@@ -38,15 +38,15 @@ public class WordController {
         return new ResponseEntity<Word>(object, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/word/random3", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Word>> getRandom3Word(@RequestBody Word word) {
+    @RequestMapping(value = "/word/random3", method = RequestMethod.POST)
+    public ResponseEntity<List<Word>> getRandom3Word(@RequestBody String word) {
         List<Word> wordList = wordService.findAll();
         int maxRandom = wordList.size();
         List<Word> result = new ArrayList<>();
         do {
             int random = (int)(Math.random() * maxRandom);
             Word wordToAdd = wordList.get(random);
-            if (!wordToAdd.getWord().equals(word.getWord()) && !result.contains(wordToAdd)) {
+            if (!wordToAdd.getWord().equals(word) && !result.contains(wordToAdd)) {
                 result.add(wordToAdd);
             }
         } while (result.size() < 3);
