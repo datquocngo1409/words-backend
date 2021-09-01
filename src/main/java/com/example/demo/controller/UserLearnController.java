@@ -26,9 +26,20 @@ public class UserLearnController {
     private UserService userService;
 
     @RequestMapping(value = "/learnedWords/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserLearn> addWords(@PathVariable("id") Long id) {
+    public ResponseEntity<UserLearn> learnedWords(@PathVariable("id") Long id) {
         UserLearn userLearn = userLearnService.findByUser(userService.findById(id));
         return new ResponseEntity<UserLearn>(userLearn, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/learnedWordList/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Word>> learnedWordList(@PathVariable("id") Long id) {
+        UserLearn userLearn = userLearnService.findByUser(userService.findById(id));
+        List<WordLearn> wordLearnList = userLearn.getLearnedWords();
+        List<Word> wordList = new ArrayList<>();
+        for (WordLearn wordLearn : wordLearnList) {
+            wordList.add(wordLearn.getWord());
+        }
+        return new ResponseEntity<List<Word>>(wordList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/addWords/{id}", method = RequestMethod.POST)
